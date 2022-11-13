@@ -1,0 +1,28 @@
+Выделяют следующие виды:
+
+1 Создание класса обработчика исключений->
+@RestControllerAdvice("корневая директория"), если никакой директории не указано, тогда захват исключений происходит на уровне той директории в которой находится сам класс.
+EXAMPLE:
+@RestControllerAdvice("org.example.demosrping260722")
+public class Advice {
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(RuntimeException.class)
+    String testException(RuntimeException runtimeException){
+        return runtimeException.getMessage();
+    }
+
+!-- можно указать несколько методов для обработки различных типов исключений
+}
+
+2 Выделение методов для захвата исключений на уровне класса контроллера
+2.1
+    @ExceptionHandler(UnauthorizedUser.class)-> сама анотация захвата,
+следует указать какое исключение данный метод должен захватить
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)-> статус ответа 
+    String <- указывает тип ответа ex2(UnauthorizedUser unauthorizedUser){
+        System.err.println(unauthorizedUser.getMessage());
+        return unauthorizedUser.getMessage();
+2.2
+@ExceptionHandler(InvalidCredentials.class)
+    ResponseEntity<String> ex1(InvalidCredentials invalidCredentials){
+        return new ResponseEntity<>(invalidCredentials.getMessage(),        HttpStatus.BAD_REQUEST);
